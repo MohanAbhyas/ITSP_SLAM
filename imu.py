@@ -15,8 +15,8 @@ GYRO_Z      = 0x47
 
 class IMU():
     def __init__(self):
-        bus = smbus.SMBus(1)
-        Device_Address = 0x68
+        self.bus = smbus.SMBus(1)
+        self.Device_Address = 0x68
         bus.write_byte_data(Device_Address, SMPLRT_DIV, 7)
         bus.write_byte_data(Device_Address, PWR_MGMT_1, 1)
         bus.write_byte_data(Device_Address, CONFIG, 0)
