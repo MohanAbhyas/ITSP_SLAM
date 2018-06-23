@@ -17,7 +17,7 @@ class SLAM():
 
     def updateState(self):
         ds = (self.wheel1.output() + self.wheel2.output())/2
-        d   t = imu.output()
+        dt = imu.output()
         dx = ds*math.cos(self.state[2])
         dy = ds*math.sin(self.state[2])
         self.state[0] += dx
@@ -27,5 +27,4 @@ class SLAM():
         A[1][2] = dx
         q = ([[c*dx*dx,c*dx*dy,c*dx*dt],[c*dx*dy,c*dy*dy,c*dy*dt],[c*dx*dt,c*dy*dt,c*dt*dt]])
         p33 = np.add(np.dot(np.dot(A,p33),np.transpose(A)) , q)
-
-
+ 
