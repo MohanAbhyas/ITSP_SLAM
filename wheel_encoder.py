@@ -15,24 +15,25 @@ class WheelEncoder():
         gpio.output(LOW_VOL, gpio.LOW)
         gpio.setup(CHANNEL_A, gpio.IN)
         gpio.setup(CHANNEL_B, gpio.IN)
-        self.vel = 0
+        self.distance = 0
         self.factor = 2
 
     def run(self):
         startTime = time.time()
         readingA_prev = gpio.input(CHANNEL_A)
         readingB_prev = gpio.input(CHANNEL_B)
-        while true:
+        while True:
             readingA = gpio.input(CHANNEL_A)
             readingB = gpio.input(CHANNEL_B)
             if readingA != readingA_prev :
-                timeDiff = time.time()-startTime
-                vel = self.factor/timeDiff
-                startTime = time.time()
                 if (readingA-readingA_prev > 1 and readingB > 1) or (readingA-readingA_prev < -1 and readingB < 1):
-                    self.vel = vel
+                    self.distance += 1*factor
                 else
-                    self.vel = -1*vel
+                    self.distance -= 1*factor
             readingA_prev = readingA
             readingB_prev = readingB
-        return self.vel
+            time.sleep(0.0001)
+    def output(self):
+        a = self.distance
+        self.distance = 0
+        return a
