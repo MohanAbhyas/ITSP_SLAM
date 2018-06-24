@@ -24,8 +24,8 @@ class SLAM():
             self.state[2] -= 360
         if self.state[2] <= -180:
             self.state[2] += 360
-        A[0][2] = -1*dy
-        A[1][2] = dx
+        self.A[0][2] = -1*dy
+        self.A[1][2] = dx
         q = ([[c*dx*dx,c*dx*dy,c*dx*dt],[c*dx*dy,c*dy*dy,c*dy*dt],[c*dx*dt,c*dy*dt,c*dt*dt]])
-        p33 = np.add(np.dot(np.dot(A,p33),np.transpose(A)) , q)
+        self.p33 = np.add(np.dot(np.dot(A,p33),np.transpose(A)) , q)
 

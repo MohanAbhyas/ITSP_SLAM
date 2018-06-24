@@ -6,8 +6,6 @@ class MainPlanner():
         self.uvl = slamObj.ransac.uv[1]
         self.frwdDist = 0
         self.leftDist = 0
-        self.frwdThresh = 1
-        self.leftThresh = 1
         self.turningPoints = []
         self.state = slamObj.state
         self.wallGapleft = 10
@@ -15,33 +13,33 @@ class MainPlanner():
         self.botAngle = 0
     def run(self):
         for i in range(0, 10):
-            leftDist += uvl.run()
-            frwdDist += uvf.run()
-        leftDist /= 10
-        frwdDist /= 10
-        if leftDist > wallGapleft:
-            x = slamObj.state[0]
-            y = slamObj.state[1]
-            botAngle -= 90
-            if botAngle < -180:
-             botAngle += 360
-            stateToBeReached = [x, y, botAngle]
-            while abs(slamObj.state[2] - botAngle) > 0.001:
-                controller.updateSetPoint(slamObj.state, stateToBeReached)
+            self.leftDist += uvl.run()
+            self.frwdDist += uvf.run()
+        self.leftDist /= 10
+        self.frwdDist /= 10
+        if self.leftDist > self.wallGapleft:
+            x = self.slamObj.state[0]
+            y = self.slamObj.state[1]
+            self.botAngle -= 90
+            if self.botAngle < -180:
+                self.botAngle += 360
+            stateToBeReached = [x, y, self.botAngle]
+            while abs(self.slamObj.state[2] - self.botAngle) > 0.001:
+                self.controller.updateSetPoint(self.slamObj.state, stateToBeReached)
             self.turningPoints.append([x, y])
 
-        elif frwdDist <= wallGapfrwd:
-            x = slamObj.state[0]
-            y = slamObj.state[1]
-            botAngle += 90
-            if botAngle > 180:
-             botAngle -= 360
-            stateToBeReached = [x, y, botAngle]
-            while abs(slamObj.state[2] - botAngle) > 0.001:
-                controller.updateSetPoint(slamObj.state, stateToBeReached)
+        elif self.frwdDist <= self.wallGapfrwd:
+            x = self.slamObj.state[0]
+            y = self.slamObj.state[1]
+            self.botAngle += 90
+            if self.botAngle > 180:
+             self.botAngle -= 360
+            stateToBeReached = [x, y, self.botAngle]
+            while abs(self.slamObj.state[2] - self.botAngle) > 0.001:
+                controller.updateSetPoint(self.slamObj.state, stateToBeReached)
             self.turningPoints.append([x, y])
 
-        elif frwdDist > wallGapfrwd:
-            distDiff = frwdDist - wallGapfrwd
-            stateToBeReached = [slamObj.state[0] + math.cos(botAngle)*distDiff, slamObj.state[1] + math.sin(botAngle)*distDiff, botAngle]
-            controller.updateSetPoint(slamObj.state, stateToBeReached)
+        elif self.frwdDist > self.wallGapfrwd:
+            distDiff = self.frwdDist - self.wallGapfrwd
+            stateToBeReached = [self.slamObj.state[0] + math.cos(self.botAngle)*distDiff, self.slamObj.state[1] + math.sin(self.botAngle)*distDiff, self.botAngle]
+            controller.updateSetPoint(self.slamObj.state, stateToBeReached)

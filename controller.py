@@ -12,10 +12,10 @@ class Controller():
         self.Output2Pin =
         self.GROUND =
         gpio.setmode(gpio.BOARD)
-        gpio.setup(Output1Pin, gpio.OUT)
-        gpio.setup(Output2Pin, gpio.OUT)
-        self.pwm1 = gpio.PWM(Output1Pin, 100)
-        self.pwm2 = gpio.PWM(Output2Pin, 100)
+        gpio.setup(self.Output1Pin, gpio.OUT)
+        gpio.setup(self.Output2Pin, gpio.OUT)
+        self.pwm1 = gpio.PWM(self.Output1Pin, 100)
+        self.pwm2 = gpio.PWM(self.Output2Pin, 100)
     def updateSetpoint(self, prsntState_, setPoint_):
         self.prsntState = prsntState_
         self.setPoint = setPoint_
@@ -32,10 +32,10 @@ class Controller():
                 rotErr += 360
             forwdErr = math.sqrt(math.pow(setPoint[0]-prsntState[0],2) +
                             math.pow(setPoint[1]-prsntState[1],2))
-            rotForce = kpr*setPoint[2] + kdr*(rotErr-rotPrev)/(time_end - time_start)
-            frwdFrce = kp*forwdErr+kd*(forwdErr - frwdPrev)/(time_end - time_start)
-            pwm1.ChangeDutyCycle(min((frwdFrce+rotForce)/(2*maxForce),1)*100)
-            pwm2.ChangeDutyCycle(min((frwdFrce-rotForce)/(2*maxForce),1)*100)
+            rotForce = self.kpr*setPoint[2] + self.kdr*(rotErr-rotPrev)/(time_end - time_start)
+            frwdFrce = self.kp*forwdErr+self.kd*(forwdErr - frwdPrev)/(time_end - time_start)
+            self.pwm1.ChangeDutyCycle(min((frwdFrce+rotForce)/(2*maxForce),1)*100)
+            self.pwm2.ChangeDutyCycle(min((frwdFrce-rotForce)/(2*maxForce),1)*100)
             rotPrev = rotErr
             frwdPrev = forwdErr
             time_start = time.time()
