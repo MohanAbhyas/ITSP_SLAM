@@ -5,10 +5,10 @@ import RPi.GPIO as gpio
 class WheelEncoder():
     def __init__(self):
         gpio.setmode(gpio.Board)
-        HIGH_VOL = 1
-        LOW_VOL = 2
-        CHANNEL_A = 3
-        CHANNEL_B = 4
+        HIGH_VOL =1 
+        LOW_VOL = 6
+        CHANNEL_A = 8
+        CHANNEL_B = 10
         gpio.setup(HIGH_VOL, gpio.OUT)
         gpio.setup(LOW_VOL,gpio.OUT)
         gpio.output(HIGH_VOL, gpio.HIGH)
