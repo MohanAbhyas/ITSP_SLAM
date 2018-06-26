@@ -26,7 +26,7 @@ class WheelEncoder():
             readingA = gpio.input(CHANNEL_A)
             readingB = gpio.input(CHANNEL_B)
             if readingA != readingA_prev :
-                if (readingA-readingA_prev > 1 and readingB > 1) or (readingA-readingA_prev < -1 and readingB < 1):
+                if( (readingA==1 and readingA_prev ==0) and readingB == 1) or( (readingA==0 and readingA_prev== 1) and readingB == 0):
                     self.distance += 1*factor
                 else
                     self.distance -= 1*factor
